@@ -1,26 +1,20 @@
 sudo: required
-
 language: generic
-
 services:
   - docker
-
 before_install:
   - docker build -t jwe4/react-test -f ./client/Dockerfile.dev ./client
-
 script:
-  - docker run jwe4/react-test npm test --  --coverage
-
+  - docker run jwe4/react-test npm test -- --coverage
 after_success:
   - docker build -t jwe4/multi-client ./client
   - docker build -t jwe4/multi-nginx ./nginx
-  - docker build -t jwe4/multi-server ./server 
+  - docker build -t jwe4/multi-server ./server
   - docker build -t jwe4/multi-worker ./worker
-  
-# Log in to the docker CLI
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-# Take those images and push them to docker hub
-- docker push jwe4/multi-client
-- docker push jwe4/multi-nginx
-- docker push jwe4/multi-server
-- docker push jwe4/multi-worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push jwe4/multi-client
+  - docker push jwe4/multi-nginx
+  - docker push jwe4/multi-server
+  - docker push jwe4/multi-worker
